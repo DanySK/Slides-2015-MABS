@@ -1,0 +1,196 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[presentation]{beamer} %\mode<presentation>{\usetheme{sapere}}
+\usetheme{CambridgeUS}
+\usecolortheme{orchid}
+
+\definecolor{themeColor}{HTML}{295D98}
+
+\setbeamercolor*{structure}{bg=black,fg=themeColor}
+
+\setbeamercolor*{palette primary}{use=structure,fg=white,bg=structure.fg}
+\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=structure.fg!75}
+\setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=structure.fg!50!black}
+\setbeamercolor*{palette quaternary}{fg=white,bg=black}
+
+\setbeamercolor{section in toc}{fg=black,bg=white}
+\setbeamercolor{alerted text}{use=structure,fg=structure.fg!50!black!80!black}
+
+\setbeamercolor{titlelike}{parent=palette primary,fg=structure.fg!50!black}
+\setbeamercolor{frametitle}{bg=structure.fg!10!white,fg=structure.fg!50!black!80!black}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{hhline}
+\usepackage{amsfonts,amstext,amssymb,wasysym}
+\usepackage{fancyvrb}
+\usepackage{alltt}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{multimedia,pgf}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{framed}
+\usepackage{cleveref}
+
+\definecolor{Fuchsia}{HTML}{8C368C}
+\definecolor{OliveGreen}{HTML}{3C8031}
+
+% Code highlighting
+\newcommand{\il}[1]{{\it \textcolor{gray}{// #1}}} % inline comment
+\newcommand{\km}[1]{\textcolor{purple}{#1}} % key mechanism primitives
+\newcommand{\ex}[1]{\textcolor{blue}{#1}} % external imported Java values
+\newcommand{\fc}[1]{\textcolor{Fuchsia}{#1}} % field calculus calls
+\newcommand{\fn}[1]{\textcolor{blue}{#1}} % building block / function calls
+\newcommand{\vb}[1]{\textcolor{OliveGreen}{#1}} % variables
+\newcommand{\str}[1]{\textcolor{darkgray}{#1}} % strings
+
+\newcommand{\bral}{\textrm{{\tt {\char '173}}}\,}
+\newcommand{\brar}{\textrm{{\tt {\char '175}}}}
+\newcommand{\var}{\texttt{x}}
+\newcommand{\asgK}{~\texttt{=}~}
+\newcommand{\letK}{\texttt{let}~}
+\newcommand{\tupK}[1]{\texttt{[}#1\texttt{]}}
+\newcommand{\lambdaK}[2]{\texttt{(}#1\texttt{)->}#2}
+\newcommand{\bodyK}[1]{\bral\! #1\!\brar}
+\newcommand{\dotK}{\texttt{.}}
+\newcommand{\applyK}{\texttt{apply}}
+\newcommand{\mname}{\ex{\texttt{m}}}
+\newcommand{\aname}{\ex{\texttt{\#a}}}
+\newcommand{\repK}[3]{\texttt{\fc{rep}(#1<-#2)}#3}
+\newcommand{\ifK}[3]{\texttt{\fc{if}}(#1)#2\,\texttt{\fc{else}}\,#3}
+\newcommand{\muxK}[3]{\texttt{\fc{mux}}(#1)#2\,\texttt{\fc{else}}\,#3}
+\newcommand{\nbrK}[1]{\texttt{\fc{nbr}}#1}
+
+\title[Gillespie's SSA to Integrate DES and MABS]{Extending the Gillespie's Stochastic Simulation Algorithm for Integrating Discrete-Event and Multi-Agent Based Simulation}
+
+\author[Montagna, Omicini, Pianini]{
+Sara Montagna, Andrea Omicini, \textbf{Danilo Pianini}
+\\
+\texttt{{\footnotesize sara.montagna@unibo.it}}}
+
+
+\institute[UNIBO]
+{\textsc{Alma Mater Studiorum}---Universit\`a di Bologna a Cesena}
+
+\date[2015-05-15 MABS]{The XVI International Workshop on Multi-Agent Based Simulation\\
+\scriptsize May 5, 2015 - Istanbul, Turkey
+}
+
+\pgfdeclareimage[height=0.625cm]{university-logo}{imgs/logo}
+\logo{\pgfuseimage{university-logo}}
+
+
+\begin{document}
+
+
+%===============================================================================
+\frame[label=coverpage]{\titlepage}
+%===============================================================================
+
+\section*{Outline}
+%===============================================================================
+\frame{\tableofcontents}
+
+
+
+%===============================================================================
+\section{Background}
+%===============================================================================
+
+%-------------------------------------------------------------------------------
+\subsection{Discrete Event Simulation (DES)}
+%-------------------------------------------------------------------------------
+
+
+\begin{frame}{DES}
+
+\ldots The most used approach in the simulation mainstream
+\begin{block}{}
+	\begin{itemize}
+    		\item Instantaneous events responsible for the changes in the system state
+    		\item In between events, no change to the system is assumed to occur
+    		\item Different events cannot be simultaneous
+		\item It is normally very efficient since it allows to jump in time from one relevant event
+	\end{itemize}
+\end{block}
+
+		
+\emph{Defining a DES means to model the behaviour of a system as an ordered sequence of non-continuous events, by specifying for each of them the \emph{perturbations} in the system state it provokes, and the exact point in time when it has to be triggered. }
+
+\end{frame}
+
+
+%-------------------------------------------------------------------------------
+\subsection{Agent Based Modelling (ABM) and Simulation (MABS)}
+%-------------------------------------------------------------------------------
+
+\begin{frame}{MABS}
+
+\ldots Introduced as a novel and alternative approach to Discrete Event Simulation (DES) and to Systems Dynamic (SD)
+
+\begin{block}{}
+	\begin{itemize}
+		\item More than a simulation method...it is a \textbf{philosophy}...    
+    		\item ABM models the system at the \emph{micro-level}
+		\begin{itemize}
+			\item active entity are autonomous and interacting agent, 
+			\item dynamic environment
+			\item global system-level behaviour as a result of the agent-to-agent interactions
+		\end{itemize}
+	\end{itemize}
+\end{block}
+
+\begin{block}{The simulation platform}
+	\begin{itemize}
+		\item Various platforms were developed for the purpose \cite{simulationtoolkits-survey,Railsback:simulation2006}, 
+		\begin{itemize}
+			\item  tools for developing, editing, and executing ABM, as well as for visualising the simulation dynamic. 
+		\end{itemize}
+		\item How do they operate over a timeline?
+		\item How are agents and environment behaviours coupled and scheduled?
+	\end{itemize}
+\end{block}
+
+
+\end{frame}
+
+
+%===============================================================================
+\section{Motivation}
+%===============================================================================
+
+
+\begin{frame}{}
+\end{frame}
+
+%===============================================================================
+\section{A Unified Stochastic Computational Model}
+%===============================================================================
+
+
+\begin{frame}{}
+\end{frame}
+
+
+%-------------------------------------------------------------------------------
+\subsection{Gillespie's SSA as an event-driven algorithm}
+%-------------------------------------------------------------------------------
+
+\begin{frame}{}
+\end{frame}
+
+%-------------------------------------------------------------------------------
+\subsection{Gillespie's SSA in MABS: related work}
+%-------------------------------------------------------------------------------
+
+
+\begin{frame}{}
+\end{frame}
+
+\end{document}
