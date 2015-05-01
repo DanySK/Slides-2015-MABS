@@ -189,15 +189,6 @@ Sara Montagna, Andrea Omicini, \textbf{Danilo Pianini}\\
 \section{Motivation}
 %===============================================================================
 
-\begin{frame}{Two intuitions}
-  \begin{block}{Unique conceptual framework}
-    Event-driven systems and multi-agent systems are amenable of a coherent interpretation within a unique conceptual framework
-  \end{block}
-  \begin{block}{Powerful simulation framework}
-    From the integration of Discrete Event Simulation (DES) and Multi-Agent Based Simulation (MABS) \cite{meyer-mabs2014}
-  \end{block}
-\end{frame}
-
 \begin{frame}{Motivation: why not  time-driven?}
 
   \begin{block}{Efficiency}
@@ -232,14 +223,44 @@ Sara Montagna, Andrea Omicini, \textbf{Danilo Pianini}\\
 
 \end{frame}
 
+\begin{frame}{From the Time-driven Drawbacks to Our Contribution}
+
+\ldots based on two intuitions:
+
+\begin{itemize}
+      \item  Unique conceptual framework \cite{omicini2015}
+       \begin{itemize}
+ 	     	\item  coherent interpretation of event-driven and multi-agent systems 
+	\end{itemize}
+ 	\item Powerful simulation framework \cite{meyer-mabs2014}
+	\begin{itemize}
+      		\item from the integration of DES and MABS 
+	\end{itemize}
+\end{itemize}
+
+\ldots and one fact:
+ 
+ \begin{itemize}
+      \item  Gillespie's SSA  \cite{gillespie1977}
+       \begin{itemize}
+  		\item as an event-driven algorithm
+	\end{itemize}
+\end{itemize}
+
+\begin{block}{Our proposal:}
+\emph{A computational model integrating DES and MABS based on an extension of the Gillespie's stochastic simulation algorithm.}
+  \end{block}
+  
+\end{frame}
+
 %===============================================================================
 \section{A Unified Stochastic Computational Model}
 %===============================================================================
 
 \begin{frame}{Gillespie's SSA as an event-driven algorithm}
-  \begin{block}{Gillespie's algorith}
+  \begin{block}{Gillespie's algorithm}
     \begin{itemize}
-      \item Gillespie \cite{gillespie1977} first proposed an event driven stochastic simulation algorithm (SSA) for the exact stochastic simulation of chemical systems
+      \item Gillespie first proposed an event driven stochastic simulation algorithm (SSA) for the exact stochastic simulation of chemical systems
       \item Gibson and Bruck \cite{gibson2000} improved its performance
       \begin{itemize}
 	\item Next reaction selection not by propensity (function of concentration of reagents and a markovian rate) but by generated putative times
@@ -329,7 +350,7 @@ Yes, it is a nicely big leap
 
 
 %===============================================================================
-\section{Case study}
+\section{ALCHEMIST: a tool}
 %===============================================================================
 
 
