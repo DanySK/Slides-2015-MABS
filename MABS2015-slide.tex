@@ -20,7 +20,6 @@
 
 \setbeamercolor*{titlelike}{parent=palette primary}
 
-
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -37,35 +36,6 @@
 \usepackage{listings}
 \usepackage{framed}
 \usepackage{cleveref}
-
-\definecolor{Fuchsia}{HTML}{8C368C}
-\definecolor{OliveGreen}{HTML}{3C8031}
-
-% Code highlighting
-\newcommand{\il}[1]{{\it \textcolor{gray}{// #1}}} % inline comment
-\newcommand{\km}[1]{\textcolor{purple}{#1}} % key mechanism primitives
-\newcommand{\ex}[1]{\textcolor{blue}{#1}} % external imported Java values
-\newcommand{\fc}[1]{\textcolor{Fuchsia}{#1}} % field calculus calls
-\newcommand{\fn}[1]{\textcolor{blue}{#1}} % building block / function calls
-\newcommand{\vb}[1]{\textcolor{OliveGreen}{#1}} % variables
-\newcommand{\str}[1]{\textcolor{darkgray}{#1}} % strings
-
-\newcommand{\bral}{\textrm{{\tt {\char '173}}}\,}
-\newcommand{\brar}{\textrm{{\tt {\char '175}}}}
-\newcommand{\var}{\texttt{x}}
-\newcommand{\asgK}{~\texttt{=}~}
-\newcommand{\letK}{\texttt{let}~}
-\newcommand{\tupK}[1]{\texttt{[}#1\texttt{]}}
-\newcommand{\lambdaK}[2]{\texttt{(}#1\texttt{)->}#2}
-\newcommand{\bodyK}[1]{\bral\! #1\!\brar}
-\newcommand{\dotK}{\texttt{.}}
-\newcommand{\applyK}{\texttt{apply}}
-\newcommand{\mname}{\ex{\texttt{m}}}
-\newcommand{\aname}{\ex{\texttt{\#a}}}
-\newcommand{\repK}[3]{\texttt{\fc{rep}(#1<-#2)}#3}
-\newcommand{\ifK}[3]{\texttt{\fc{if}}(#1)#2\,\texttt{\fc{else}}\,#3}
-\newcommand{\muxK}[3]{\texttt{\fc{mux}}(#1)#2\,\texttt{\fc{else}}\,#3}
-\newcommand{\nbrK}[1]{\texttt{\fc{nbr}}#1}
 
 % Names
 \newcommand{\alchemist}{{\sf ALCHEMIST}}
@@ -117,7 +87,7 @@
 	\begin{itemize}
     		\item Instantaneous events responsible for the changes in the system state
     		\item In between events, no change to the system is assumed to occur
-    		\item Different events cannot be simultaneous
+    		\item All events are ordered (even if they happen at the exact same time)
 		\item It is normally very efficient since it allows to jump in time from one relevant event
 	\end{itemize}
 \end{block}
@@ -317,7 +287,7 @@ Based on two intuitions
   \end{block}
 \end{frame}
 
-\subsection{Engine}
+\subsection{Simulation algorithm}
 
 \begin{frame}{Extended SSA---Phase 1: Pick the Next Event}
   \begin{block}{How to select the next event?}
